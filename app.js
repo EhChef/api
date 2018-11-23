@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const commandRoutes = require('./api/routes/commands');
+const accountRoutes = require('./api/routes/accounts');
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/commands', commandRoutes);
+app.use('/accounts', accountRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not Found');
