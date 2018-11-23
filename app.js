@@ -4,14 +4,14 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const commandRoutes = require('./api/routes/commands');
-const accountRoutes = require('./api/routes/accounts');
-
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+const orderRoutes = require('./api/routes/orders');
+const accountRoutes = require('./api/routes/accounts');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/commands', commandRoutes);
+app.use('/orders', orderRoutes);
 app.use('/accounts', accountRoutes);
 
 app.use((req, res, next) => {
