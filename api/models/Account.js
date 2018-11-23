@@ -3,14 +3,15 @@ const crypto = require('crypto');
 
 const AccountSchema = mongoose.Schema({
 
-    name: {
+    fullname: {
         type: String,
         default: ''
     },
 
-    pseudo: {
+    email: {
         type: String,
-        default: ''
+        default: '',
+        unique: true
     },
 
     password: {
@@ -36,7 +37,7 @@ const AccountSchema = mongoose.Schema({
     role: {
         type: Number,
         default: 0
-    }
+    },
 
     created_at: {
         type: Date,
