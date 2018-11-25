@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
+const autoIncrement = require("mongodb-autoincrement");
 
-const CommandSchema = mongoose.Schema({
+const OrderSchema = mongoose.Schema({
 
-    app: {
+    account: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "App"
+        ref: "Account"
     },
 
-    commandNumber: {
+    orderId: {
         type: Number,
         default: 0
     },
@@ -54,4 +55,10 @@ const CommandSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Command", CommandSchema);
+autoIncrement.setDefaults({
+    collection: 'orders',
+    field: 'orderId',
+    step: 1
+});
+
+module.exports = mongoose.model("Order", OrderSchema);
