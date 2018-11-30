@@ -59,7 +59,7 @@ MainCourseSchema.pre("save", function(next) {
 });
 
 MainCourseSchema.methods.toJSON = function() {
-    const obj = @toObject();
+    const obj = this.toObject();
     return obj;
 };
 

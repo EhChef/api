@@ -39,7 +39,7 @@ DesertSchema.pre("save", function(next) {
 });
 
 DesertSchema.methods.toJSON = function() {
-    const obj = @toObject();
+    const obj = this.toObject();
     return obj;
 };
 

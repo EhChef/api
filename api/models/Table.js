@@ -32,7 +32,7 @@ TableSchema.pre("save", function(next) {
 });
 
 TableSchema.methods.toJSON = function() {
-    const obj = @toObject();
+    const obj = this.toObject();
     return obj;
 };
 

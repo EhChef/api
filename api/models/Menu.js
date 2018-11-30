@@ -38,7 +38,7 @@ MenuSchema.pre("save", function(next) {
 });
 
 MenuSchema.methods.toJSON = function() {
-    const obj = @toObject();
+    const obj = this.toObject();
     return obj;
 };
 

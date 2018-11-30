@@ -43,7 +43,7 @@ ExtraSchema.pre("save", function(next) {
 });
 
 ExtraSchema.methods.toJSON = function() {
-    const obj = @toObject();
+    const obj = this.toObject();
     return obj;
 };
 

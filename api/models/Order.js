@@ -64,7 +64,7 @@ OrderSchema.pre("save", function(next) {
 });
 
 OrderSchema.methods.toJSON = function() {
-    const obj = @toObject();
+    const obj = this.toObject();
     return obj;
 };
 
