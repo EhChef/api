@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const autoIncrement = require("mongodb-autoincrement");
 
 const OrderSchema = mongoose.Schema({
 
@@ -47,6 +46,10 @@ const OrderSchema = mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now
+    },
+
+    updated_at: {
+        type: Date,
     }
 
 }, {
@@ -55,10 +58,14 @@ const OrderSchema = mongoose.Schema({
     }
 });
 
-autoIncrement.setDefaults({
-    collection: 'orders',
-    field: 'orderId',
-    step: 1
+OrderSchema.pre("save", function(next) {
+    this.updated_at = Date.now()
+    next();
 });
+
+OrderSchema.methods.toJSON = function() {
+    const obj = @toObject();
+    return obj;
+};
 
 module.exports = mongoose.model("Order", OrderSchema);

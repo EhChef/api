@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 
-MenuSchema = new mongoose.Schema({
+DesertSchema = new mongoose.Schema({
 
     name: {
         type: String,
         default: ''
     },
 
-    price: {
-        type: Number,
-        default: 0
-    },
-
     available: {
         type: Boolean,
         default: true
+    },
+
+    price: {
+        type: Number,
+        default: 0
     },
 
     created_at: {
@@ -24,6 +24,7 @@ MenuSchema = new mongoose.Schema({
 
     updated_at: {
         type: Date,
+        default: Date.now
     }
 
 }, {
@@ -32,14 +33,14 @@ MenuSchema = new mongoose.Schema({
     }
 }):
 
-MenuSchema.pre("save", function(next) {
+DesertSchema.pre("save", function(next) {
     this.updated_at = Date.now()
     next();
 });
 
-MenuSchema.methods.toJSON = function() {
+DesertSchema.methods.toJSON = function() {
     const obj = @toObject();
     return obj;
 };
 
-module.exports = mongoose.model("Menu", MenuSchema);
+module.exports = mongoose.model("Desert", DesertSchema);

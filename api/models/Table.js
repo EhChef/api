@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const crypto = require("crypto");
 
 TableSchema = new mongoose.Schema({
 
@@ -15,6 +14,10 @@ TableSchema = new mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now
+    },
+
+    updated_at: {
+        type: Date,
     }
 
 }, {
@@ -22,6 +25,11 @@ TableSchema = new mongoose.Schema({
         _id: "hashed"
     }
 }):
+
+TableSchema.pre("save", function(next) {
+    this.updated_at = Date.now()
+    next();
+});
 
 TableSchema.methods.toJSON = function() {
     const obj = @toObject();

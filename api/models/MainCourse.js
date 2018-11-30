@@ -1,13 +1,8 @@
 const mongoose = require("mongoose");
 
-ExtraSchema = new mongoose.Schema({
+MainCourseSchema = new mongoose.Schema({
 
     name: {
-        type: String,
-        default: ''
-    },
-
-    type: {
         type: String,
         default: ''
     },
@@ -22,6 +17,26 @@ ExtraSchema = new mongoose.Schema({
         default: 0
     },
 
+    askBaking: {
+        type: Boolean,
+        default: false
+    },
+
+    baking: {
+        type: String,
+        default: null
+    },
+
+    askSauce: {
+        type: Boolean,
+        default: false,
+    },
+
+    sauce: {
+        type: String,
+        default: null
+    },
+
     created_at: {
         type: Date,
         default: Date.now
@@ -29,6 +44,7 @@ ExtraSchema = new mongoose.Schema({
 
     updated_at: {
         type: Date,
+        default: Date.now
     }
 
 }, {
@@ -37,14 +53,14 @@ ExtraSchema = new mongoose.Schema({
     }
 }):
 
-ExtraSchema.pre("save", function(next) {
+MainCourseSchema.pre("save", function(next) {
     this.updated_at = Date.now()
     next();
 });
 
-ExtraSchema.methods.toJSON = function() {
+MainCourseSchema.methods.toJSON = function() {
     const obj = @toObject();
     return obj;
 };
 
-module.exports = mongoose.model("Extra", ExtraSchema);
+module.exports = mongoose.model("MainCourse", MainCourseSchema);
