@@ -12,6 +12,21 @@ MenuSchema = new mongoose.Schema({
         default: 0
     },
 
+    starter: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Starter"
+    },
+
+    mainCourse: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MainCourse"
+    },
+
+    desert: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Desert"
+    },
+
     available: {
         type: Boolean,
         default: true
