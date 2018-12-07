@@ -20,6 +20,30 @@ const OrderSchema = mongoose.Schema({
         defaut: []
     },
 
+    starters: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Starter"
+        }],
+        default: []
+    },
+
+    mainCourses: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "MainCourse"
+        }],
+        default: []
+    },
+
+    desserts: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Dessert"
+        }],
+        default: []
+    },
+
     supplements: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,

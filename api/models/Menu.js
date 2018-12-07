@@ -22,9 +22,9 @@ MenuSchema = new mongoose.Schema({
         ref: "MainCourse"
     },
 
-    desert: {
+    dessert: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Desert"
+        ref: "Dessert"
     },
 
     available: {
