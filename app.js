@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const orderRoutes = require('./api/routes/orders');
@@ -15,7 +15,7 @@ const accountRoutes = require('./api/routes/accounts');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Header',
+    res.header('Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     );
     if (req.method == 'OPTIONS') {
