@@ -13,27 +13,18 @@ MenuSchema = new mongoose.Schema({
     },
 
     starter: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Starter"
-        }],
-        defaut: []
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Starter"
     },
 
     mainCourse: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "MainCourse"
-        }],
-        defaut: []
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MainCourse"
     },
 
-    dessert: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Dessert"
-        }],
-        defaut: []
+    desert: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Desert"
     },
 
     available: {
