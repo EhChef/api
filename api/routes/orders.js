@@ -6,7 +6,7 @@ const utils = require('../../config/utils');
 const Order = require('../models/Order');
 const checkAuth = require('../middleware/auth');
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAuth, (req, res, next) => {
     jwt.verify(req.token, process.env.JWT_KEY, async function(err, data) {
         if (err) {
             res.status(403).json({
@@ -18,7 +18,6 @@ router.get('/', (req, res, next) => {
             const offset = parseInt(req.query.offset) || 0;
             const search = req.query.search || false;
             const conditions = {};
-
             const orders = await Order
                 .find(conditions)
                 .skip(offset)
