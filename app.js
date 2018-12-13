@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const orderRoutes = require('./api/routes/orders');
+const starterRoutes = require('./api/routes/starters');
 const accountRoutes = require('./api/routes/accounts');
 
 app.use((req, res, next) => {
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/orders', orderRoutes);
+app.use('/starters', starterRoutes);
 app.use('/accounts', accountRoutes);
 
 app.use((req, res, next) => {
