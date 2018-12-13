@@ -27,19 +27,9 @@ MainCourseSchema = new mongoose.Schema({
         default: false
     },
 
-    baking: {
-        type: String,
-        default: null
-    },
-
     askSauce: {
         type: Boolean,
         default: false,
-    },
-
-    sauce: {
-        type: String,
-        default: null
     },
 
     created_at: {

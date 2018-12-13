@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 
 const orderRoutes = require('./api/routes/orders');
 const starterRoutes = require('./api/routes/starters');
+const mainCoursesRoutes = require('./api/routes/mainCourses');
 const dessertRoutes = require('./api/routes/desserts');
 const accountRoutes = require('./api/routes/accounts');
 
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 
 app.use('/orders', orderRoutes);
 app.use('/starters', starterRoutes);
+app.use('/maincourses', mainCoursesRoutes);
 app.use('/desserts', dessertRoutes);
 app.use('/accounts', accountRoutes);
 
