@@ -90,7 +90,7 @@ router.delete('/:id', (req, res, next) => {
             }
             const id = req.params.id;
             Order.deleteOne({
-                _id: req.params.id
+                _id: req.params.id,
                 account: req.headers.account
             }).then(result => {
                 res.status(200).json({
