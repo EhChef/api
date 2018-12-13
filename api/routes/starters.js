@@ -16,12 +16,15 @@ router.get('/', checkAuth, (req, res, next) => {
                 message: 'The ressource you are looking for is forbidden.'
             });
         } else {
+            if (utils.requestIsEmpty(req.headers.account)) {
+                res.status(500).json({ message: 'You must provide an account id in your request headers.' });
+            }
+
             const limit = parseInt(req.query.count) || 10;
             const offset = parseInt(req.query.offset) || 0;
             const search = req.query.search || false;
-            const conditions = {};
             const starters = await Starter
-                .find(conditions)
+                .find({ account: req.headers.account })
                 .skip(offset)
                 .limit(limit)
                 .sort({ createdAt: 1 }).then(starters => {
@@ -48,7 +51,7 @@ router.post('/', checkAuth, (req, res, next) => {
                 res.status(400).json({ message: 'Cannot create starter, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
-                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+                res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
             const starter = new Starter({
                 account: req.headers.account,
@@ -83,7 +86,7 @@ router.get('/:id', checkAuth, (req, res, next) => {
                 res.status(400).json({ message: 'Cannot get starter, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
-                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+                res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
             const starter = Starter
                 .findOne({
@@ -114,7 +117,7 @@ router.post('/:id', checkAuth, (req, res, next) => {
                 res.status(400).json({ message: 'Cannot update starter, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
-                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+                res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
             const starter = await Starter.findOne({
                 _id: req.params.id,
@@ -150,7 +153,7 @@ router.delete('/:id', checkAuth, (req, res, next) => {
                 res.status(400).json({ message: 'Cannot delete starter, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
-                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+                res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
             Starter.deleteOne({
                 _id: req.params.id,
