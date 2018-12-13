@@ -46,7 +46,7 @@ MainCourseSchema = new mongoose.Schema({
     shardKey: {
         _id: "hashed"
     }
-}):
+});
 
 MainCourseSchema.pre("save", function(next) {
     this.updated_at = Date.now()
