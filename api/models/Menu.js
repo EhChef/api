@@ -24,7 +24,7 @@ MenuSchema = new mongoose.Schema({
 
     dessert: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Desert"
+        ref: "Dessert"
     },
 
     available: {

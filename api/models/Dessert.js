@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-DesertSchema = new mongoose.Schema({
+DessertSchema = new mongoose.Schema({
 
     name: {
         type: String,
@@ -33,14 +33,14 @@ DesertSchema = new mongoose.Schema({
     }
 }):
 
-DesertSchema.pre("save", function(next) {
+DessertSchema.pre("save", function(next) {
     this.updated_at = Date.now()
     next();
 });
 
-DesertSchema.methods.toJSON = function() {
+DessertSchema.methods.toJSON = function() {
     const obj = this.toObject();
     return obj;
 };
 
-module.exports = mongoose.model("Desert", DesertSchema);
+module.exports = mongoose.model("Dessert", DessertSchema);
