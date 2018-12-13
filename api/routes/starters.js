@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const ObjectId = require("mongoose").Types.ObjectId
+
 const utils = require('../../config/utils');
 
 const Starter = require('../models/Starter');
@@ -45,9 +47,11 @@ router.post('/', checkAuth, (req, res, next) => {
             if (utils.requestIsEmpty(req.body)) {
                 res.status(400).json({ message: 'Cannot create starter, empty request.' });
             }
-
+            if (utils.requestIsEmpty(req.headers.account)) {
+                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+            }
             const starter = new Starter({
-                account: req.body.account,
+                account: req.headers.account,
                 name: req.body.name,
                 available: true,
                 price: req.body.price,
@@ -64,10 +68,10 @@ router.post('/', checkAuth, (req, res, next) => {
                     res.status(500).json({ message: err.message });
                 });
         }
-    })
+    });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.get('/:id', checkAuth, (req, res, next) => {
     jwt.verify(req.token, process.env.JWT_KEY, function(err, data) {
         if (err) {
             res.status(403).json({
@@ -76,11 +80,22 @@ router.delete('/:id', (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id)) {
+            if (utils.requestIsEmpty(req.headers.account)) {
+                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+            }
+            if (utils.requestIsEmpty(req.headers.account)) {
+                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+            }
+        } else {
+            if (utils.requestIsEmpty(req.params.id) || !ObjectId.isValid(req.params.id)) {
                 res.status(400).json({ message: 'Cannot delete starter, empty request.' });
             }
-            const id = req.params.id;
+            if (utils.requestIsEmpty(req.headers.account)) {
+                res.status(400).json({ message: 'You must provide an account id in your request headers.' });
+            }
             Starter.deleteOne({
-                _id: req.params.id
+                _id: req.params.id,
+                account: req.headers.account
             }).then(result => {
                 res.status(200).json({
                     success: true,
