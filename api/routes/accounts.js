@@ -58,7 +58,6 @@ router.post('/login', async (req, res) => {
             message: 'No account found for provided email.'
         });
     } else {
-        console.log('account : ', account);
         if (account.password !== crypto.createHmac("sha256", account.salt).update(req.body.password).digest("hex")) {
             res.status(400).json({
                 error: 'BadRequest',
