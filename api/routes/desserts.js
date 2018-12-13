@@ -143,7 +143,6 @@ router.post('/:id', checkAuth, (req, res, next) => {
 router.delete('/:id', checkAuth, (req, res, next) => {
     jwt.verify(req.token, process.env.JWT_KEY, function(err, data) {
         if (err) {
-            console.log(err);
             res.status(403).json({
                 error: 'Forbidden',
                 message: 'The ressource you are looking for is forbidden.'
