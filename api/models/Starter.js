@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 StarterSchema = new mongoose.Schema({
 
+    account: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account'
+    },
+
     name: {
         type: String,
         default: ''
@@ -31,7 +36,7 @@ StarterSchema = new mongoose.Schema({
     shardKey: {
         _id: "hashed"
     }
-}):
+});
 
 StarterSchema.pre("save", function(next) {
     this.updated_at = Date.now()

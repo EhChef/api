@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 MainCourseSchema = new mongoose.Schema({
 
+    account: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account'
+    },
+
     name: {
         type: String,
         default: ''

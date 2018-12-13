@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const utils = require('../../config/utils');
 
-const Order = require('../models/Order');
+const Starter = require('../models/Starter');
 const checkAuth = require('../middleware/auth');
 
 router.get('/', checkAuth, (req, res, next) => {
@@ -18,14 +18,14 @@ router.get('/', checkAuth, (req, res, next) => {
             const offset = parseInt(req.query.offset) || 0;
             const search = req.query.search || false;
             const conditions = {};
-            const orders = await Order
+            const starters = await Starter
                 .find(conditions)
                 .skip(offset)
                 .limit(limit)
-                .sort({ createdAt: 1 }).then(orders => {
+                .sort({ createdAt: 1 }).then(starters => {
                     res.status(200).json({
-                        message: 'Orders fetched successfully',
-                        orders: orders
+                        message: 'Starters fetched successfully',
+                        starters: starters
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -43,32 +43,22 @@ router.post('/', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.body)) {
-                res.status(400).json({ message: 'Cannot create order, empty request.' });
+                res.status(400).json({ message: 'Cannot create starter, empty request.' });
             }
-            let lastOrder = await Order
-                .find({ account: req.body.account })
-                .limit(1)
-                .sort({ createdAt: -1 });
 
-            const order = new Order({
+            const starter = new Starter({
                 account: req.body.account,
-                orderId: lastOrder.length > 0 ? lastOrder[0].orderId + 1 : 0,
-                menus: req.body.menus,
-                starters: req.body.starters,
-                mainCourses: req.body.mainCourses,
-                desserts: req.body.desserts,
-                supplements: req.body.supplements,
-                table: req.body.table,
-                served: false,
-                totalPrice: req.body.totalPrice
+                name: req.body.name,
+                available: true,
+                price: req.body.price,
             });
 
-            order
+            starter
                 .save()
                 .then(result => {
                     res.status(200).json({
-                        message: 'New order created with success.',
-                        order: order
+                        message: 'New starter created with success.',
+                        starter: starter
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -86,15 +76,15 @@ router.delete('/:id', (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id)) {
-                res.status(400).json({ message: 'Cannot delete order, empty request.' });
+                res.status(400).json({ message: 'Cannot delete starter, empty request.' });
             }
             const id = req.params.id;
-            Order.deleteOne({
+            Starter.deleteOne({
                 _id: req.params.id
             }).then(result => {
                 res.status(200).json({
                     success: true,
-                    message: 'Order deleted'
+                    message: 'Starter deleted'
                 });
             }).catch(err => {
                 res.status(500).json({ message: err.message });
