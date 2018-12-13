@@ -54,8 +54,12 @@ router.post('/', checkAuth, (req, res, next) => {
                 account: req.body.account,
                 orderId: lastOrder.length > 0 ? lastOrder[0].orderId + 1 : 0,
                 menus: req.body.menus,
+                starters: req.body.starters,
+                mainCourses: req.body.mainCourses,
+                desserts: req.body.desserts,
                 supplements: req.body.supplements,
                 table: req.body.table,
+                served: false,
                 totalPrice: req.body.totalPrice
             });
 
