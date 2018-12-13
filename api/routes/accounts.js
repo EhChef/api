@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
         .find(conditions)
         .skip(offset)
         .limit(limit)
-        .sort({ createdAt: -1 }).then(accounts => {
+        .sort({ created_at: -1 }).then(accounts => {
             res.status(200).json({
                 message: 'Accounts fetched successfully',
                 accounts: accounts
