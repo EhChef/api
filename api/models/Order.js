@@ -44,10 +44,10 @@ const OrderSchema = mongoose.Schema({
         default: []
     },
 
-    supplements: {
+    extras: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Supplement"
+            ref: "Extra"
         }],
         default: []
     },
