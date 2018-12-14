@@ -25,6 +25,19 @@ router.get('/', async (req, res, next) => {
         });
 });
 
+router.get('/infos', async (req, res, next) => {
+    try {
+        const account = await Account.findById(req.headers.account);
+        res.status(200).json({
+            message: 'Accounts fetched successfully',
+            account: account,
+        });
+    }
+    catch(err) {
+        res.status(500).json({ message: err.message });
+    };
+});
+
 router.post('/', async (req, res) => {
     const existingAccount = await Account.findOne({ email: req.body.email });
     if (existingAccount) {
