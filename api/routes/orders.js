@@ -47,7 +47,7 @@ router.post('/', async (req, res, next) => {
     let lastOrder = await Order
         .find({ account: req.body.account })
         .limit(1)
-        .sort({ createdAt: -1 });
+        .sort({ created_at: -1 });
 
     const order = new Order({
         account: req.headers.account,
