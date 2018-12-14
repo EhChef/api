@@ -10,6 +10,7 @@ const Starter = require('../models/Starter');
 const MainCourse = require('../models/MainCourse');
 const Dessert = require('../models/Dessert');
 const Extra = require('../models/Extra');
+const Menu = require('../models/Menu');
 
 router.get('/', async (req, res, next) => {
     const limit = parseInt(req.query.count) || 10;
@@ -41,6 +42,8 @@ router.get('/infos', async (req, res, next) => {
         const mainCourse = await MainCourse.findOne({ account: req.headers.account });
         const dessert = await Dessert.findOne({ account: req.headers.account });
         const extra = await Extra.findOne({ account: req.headers.account });
+        const menu = await Menu.findOne({ account: req.headers.account });
+
         res.status(200).json({
             message: 'Accounts fetched successfully',
             account: account,
@@ -48,6 +51,7 @@ router.get('/infos', async (req, res, next) => {
             hasMainCourses: !!mainCourse,
             hasDessert: !!dessert,
             hasExtra: !!extra,
+            hasMenu: !!menu
         });
     }
     catch(err) {
