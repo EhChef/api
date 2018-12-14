@@ -47,7 +47,7 @@ router.post('/', checkAuth, (req, res, next) => {
             const dessert = new Dessert({
                 account: req.headers.account,
                 name: req.body.name,
-                available: true,
+                available: req.body.available,
                 price: req.body.price,
             });
 
