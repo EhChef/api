@@ -32,17 +32,18 @@ router.get('/', async (req, res, next) => {
         });
 });
 
-router.get('/infos', async (req, res, next) => {
-    if (utils.requestIsEmpty(req.headers.account)) {
-        res.status(500).json({ message: 'You must provide an account id in your request headers.' });
+router.get('/:id/infos', async (req, res, next) => {
+    const accountId = req.params.id;
+    if (utils.requestIsEmpty(accountId)) {
+        res.status(500).json({ message: 'You must provide an account id in your request params.' });
     }
     try {
-        const account = await Account.findById(req.headers.account);
-        const starter = await Starter.findOne({ account: req.headers.account });
-        const mainCourse = await MainCourse.findOne({ account: req.headers.account });
-        const dessert = await Dessert.findOne({ account: req.headers.account });
-        const extra = await Extra.findOne({ account: req.headers.account });
-        const menu = await Menu.findOne({ account: req.headers.account });
+        const account = await Account.findById(accountId);
+        const starter = await Starter.findOne({ account: accountId });
+        const mainCourse = await MainCourse.findOne({ account: accountId });
+        const dessert = await Dessert.findOne({ account: accountId });
+        const extra = await Extra.findOne({ account: accountId });
+        const menu = await Menu.findOne({ account: accountId });
 
         res.status(200).json({
             message: 'Accounts fetched successfully',
