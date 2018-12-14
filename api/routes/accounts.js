@@ -3,7 +3,14 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
+const utils = require('../../config/utils');
+
 const Account = require('../models/Account');
+const Starter = require('../models/Starter');
+const MainCourse = require('../models/MainCourse');
+const Dessert = require('../models/Dessert');
+const Extra = require('../models/Extra');
+const Menu = require('../models/Menu');
 
 router.get('/', async (req, res, next) => {
     const limit = parseInt(req.query.count) || 10;
@@ -23,6 +30,33 @@ router.get('/', async (req, res, next) => {
         }).catch(err => {
             res.status(500).json({ message: err.message });
         });
+});
+
+router.get('/infos', async (req, res, next) => {
+    if (utils.requestIsEmpty(req.headers.account)) {
+        res.status(500).json({ message: 'You must provide an account id in your request headers.' });
+    }
+    try {
+        const account = await Account.findById(req.headers.account);
+        const starter = await Starter.findOne({ account: req.headers.account });
+        const mainCourse = await MainCourse.findOne({ account: req.headers.account });
+        const dessert = await Dessert.findOne({ account: req.headers.account });
+        const extra = await Extra.findOne({ account: req.headers.account });
+        const menu = await Menu.findOne({ account: req.headers.account });
+
+        res.status(200).json({
+            message: 'Accounts fetched successfully',
+            account: account,
+            hasStarters: !!starter,
+            hasMainCourses: !!mainCourse,
+            hasDessert: !!dessert,
+            hasExtra: !!extra,
+            hasMenu: !!menu
+        });
+    }
+    catch(err) {
+        res.status(500).json({ message: err.message });
+    };
 });
 
 router.post('/', async (req, res) => {
