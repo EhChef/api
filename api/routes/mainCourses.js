@@ -56,7 +56,7 @@ router.post('/', checkAuth, (req, res, next) => {
             const mainCourse = new MainCourse({
                 account: req.headers.account,
                 name: req.body.name,
-                available: true,
+                available: req.body.available,
                 price: req.body.price,
                 askBaking: req.body.askBaking,
                 askSauce: req.body.askSauce,
