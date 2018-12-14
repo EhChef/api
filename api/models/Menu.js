@@ -50,7 +50,7 @@ MenuSchema = new mongoose.Schema({
     shardKey: {
         _id: "hashed"
     }
-}):
+});
 
 MenuSchema.pre("save", function(next) {
     this.updated_at = Date.now()

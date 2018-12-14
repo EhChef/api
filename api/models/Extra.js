@@ -40,7 +40,7 @@ ExtraSchema = new mongoose.Schema({
     shardKey: {
         _id: "hashed"
     }
-}):
+});
 
 ExtraSchema.pre("save", function(next) {
     this.updated_at = Date.now()
