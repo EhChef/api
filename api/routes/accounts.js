@@ -6,6 +6,7 @@ const router = express.Router();
 const utils = require('../../config/utils');
 
 const Account = require('../models/Account');
+const Starter = require('../models/Starter');
 
 router.get('/', async (req, res, next) => {
     const limit = parseInt(req.query.count) || 10;
@@ -33,9 +34,11 @@ router.get('/infos', async (req, res, next) => {
     }
     try {
         const account = await Account.findById(req.headers.account);
+        const starter = await Starter.findOne({ account: req.headers.account });
         res.status(200).json({
             message: 'Accounts fetched successfully',
             account: account,
+            hasStarters: !!starter,
         });
     }
     catch(err) {
