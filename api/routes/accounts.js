@@ -3,6 +3,8 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
+const utils = require('../../config/utils');
+
 const Account = require('../models/Account');
 
 router.get('/', async (req, res, next) => {
@@ -26,6 +28,9 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/infos', async (req, res, next) => {
+    if (utils.requestIsEmpty(req.headers.account)) {
+        res.status(500).json({ message: 'You must provide an account id in your request headers.' });
+    }
     try {
         const account = await Account.findById(req.headers.account);
         res.status(200).json({
