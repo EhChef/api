@@ -36,7 +36,7 @@ DessertSchema = new mongoose.Schema({
     shardKey: {
         _id: "hashed"
     }
-}):
+});
 
 DessertSchema.pre("save", function(next) {
     this.updated_at = Date.now()
