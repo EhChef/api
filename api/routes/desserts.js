@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
     const limit = parseInt(req.query.count) || 10;
     const offset = parseInt(req.query.offset) || 0;
     const search = req.query.search || false;
-    const desserts = await Dessert
+    const desserts = Dessert
         .find({ account: req.headers.account })
         .skip(offset)
         .limit(limit)
