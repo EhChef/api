@@ -5,29 +5,38 @@ const ObjectId = require("mongoose").Types.ObjectId
 
 const utils = require('../../config/utils');
 
-const Starter = require('../models/Starter');
+const Table = require('../models/Table');
 const checkAuth = require('../middleware/auth');
 
-router.get('/', (req, res, next) => {
-    if (utils.requestIsEmpty(req.headers.account)) {
-        res.status(500).json({ message: 'You must provide an account id in your request headers.' });
-    }
-
-    const limit = parseInt(req.query.count) || 10;
-    const offset = parseInt(req.query.offset) || 0;
-    const search = req.query.search || false;
-    const starters = await Starter
-        .find({ account: req.headers.account })
-        .skip(offset)
-        .limit(limit)
-        .sort({ created_at: 1 }).then(starters => {
-            res.status(200).json({
-                message: 'Starters fetched successfully',
-                starters: starters
+router.get('/', checkAuth, (req, res, next) => {
+    jwt.verify(req.token, process.env.JWT_KEY, async function(err, data) {
+        if (err) {
+            res.status(403).json({
+                error: 'Forbidden',
+                message: 'The ressource you are looking for is forbidden.'
             });
-        }).catch(err => {
-            res.status(500).json({ message: err.message });
-        });
+        } else {
+            if (utils.requestIsEmpty(req.headers.account)) {
+                res.status(500).json({ message: 'You must provide an account id in your request headers.' });
+            }
+
+            const limit = parseInt(req.query.count) || 10;
+            const offset = parseInt(req.query.offset) || 0;
+            const search = req.query.search || false;
+            const tables = await Table
+                .find({ account: req.headers.account })
+                .skip(offset)
+                .limit(limit)
+                .sort({ created_at: 1 }).then(tables => {
+                    res.status(200).json({
+                        message: 'Tables fetched successfully',
+                        tables: tables
+                    });
+                }).catch(err => {
+                    res.status(500).json({ message: err.message });
+                });
+        }
+    });
 });
 
 router.post('/', checkAuth, (req, res, next) => {
@@ -39,24 +48,23 @@ router.post('/', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.body)) {
-                res.status(400).json({ message: 'Cannot create starter, empty request.' });
+                res.status(400).json({ message: 'Cannot create table, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            const starter = new Starter({
+            const table = new Table({
                 account: req.headers.account,
-                name: req.body.name,
-                available: req.body.available,
-                price: req.body.price,
+                tableNumber: req.body.tableNumber,
+                capacity: req.body.capacity
             });
 
-            starter
+            table
                 .save()
                 .then(result => {
                     res.status(200).json({
-                        message: 'New starter created with success.',
-                        starter: starter
+                        message: 'New table created with success.',
+                        table: table
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -74,20 +82,20 @@ router.get('/:id', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id) || !ObjectId.isValid(req.params.id)) {
-                res.status(400).json({ message: 'Cannot get starter, empty request.' });
+                res.status(400).json({ message: 'Cannot get table, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            const starter = Starter
+            const table = Table
                 .findOne({
                     _id: req.params.id,
                     account: req.headers.account
                 })
-                .then(starter => {
+                .then(table => {
                     res.status(200).json({
-                        message: 'Starter fetched successfully',
-                        starter: starter
+                        message: 'Table fetched successfully',
+                        table: table
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -105,24 +113,24 @@ router.post('/:id', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id) || !ObjectId.isValid(req.params.id)) {
-                res.status(400).json({ message: 'Cannot update starter, empty request.' });
+                res.status(400).json({ message: 'Cannot update table, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            const starter = await Starter.findOne({
+            const table = await Table.findOne({
                 _id: req.params.id,
                 account: req.headers.account
             });
 
-            Object.assign(starter, req.body);
+            Object.assign(table, req.body);
 
-            starter
+            table
                 .save()
                 .then(result => {
                     res.status(200).json({
-                        message: 'Starter updated with success.',
-                        starter: starter
+                        message: 'Table updated with success.',
+                        table: table
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -140,18 +148,18 @@ router.delete('/:id', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id) || !ObjectId.isValid(req.params.id)) {
-                res.status(400).json({ message: 'Cannot delete starter, empty request.' });
+                res.status(400).json({ message: 'Cannot delete table, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            Starter.deleteOne({
+            Table.deleteOne({
                 _id: req.params.id,
                 account: req.headers.account
             }).then(result => {
                 res.status(200).json({
                     success: true,
-                    message: 'Starter deleted'
+                    message: 'Table deleted'
                 });
             }).catch(err => {
                 res.status(500).json({ message: err.message });

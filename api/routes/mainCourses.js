@@ -8,35 +8,26 @@ const utils = require('../../config/utils');
 const MainCourse = require('../models/MainCourse');
 const checkAuth = require('../middleware/auth');
 
-router.get('/', checkAuth, (req, res, next) => {
-    jwt.verify(req.token, process.env.JWT_KEY, async function(err, data) {
-        if (err) {
-            res.status(403).json({
-                error: 'Forbidden',
-                message: 'The ressource you are looking for is forbidden.'
-            });
-        } else {
-            if (utils.requestIsEmpty(req.headers.account)) {
-                res.status(500).json({ message: 'You must provide an account id in your request headers.' });
-            }
+router.get('/', (req, res, next) => {
+    if (utils.requestIsEmpty(req.headers.account)) {
+        res.status(500).json({ message: 'You must provide an account id in your request headers.' });
+    }
 
-            const limit = parseInt(req.query.count) || 10;
-            const offset = parseInt(req.query.offset) || 0;
-            const search = req.query.search || false;
-            const mainCourses = await MainCourse
-                .find({ account: req.headers.account })
-                .skip(offset)
-                .limit(limit)
-                .sort({ created_at: 1 }).then(mainCourses => {
-                    res.status(200).json({
-                        message: 'MainCourses fetched successfully',
-                        mainCourses: mainCourses
-                    });
-                }).catch(err => {
-                    res.status(500).json({ message: err.message });
-                });
-        }
-    });
+    const limit = parseInt(req.query.count) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+    const search = req.query.search || false;
+    const mainCourses = await MainCourse
+        .find({ account: req.headers.account })
+        .skip(offset)
+        .limit(limit)
+        .sort({ created_at: 1 }).then(mainCourses => {
+            res.status(200).json({
+                message: 'MainCourses fetched successfully',
+                mainCourses: mainCourses
+            });
+        }).catch(err => {
+            res.status(500).json({ message: err.message });
+        });
 });
 
 router.post('/', checkAuth, (req, res, next) => {

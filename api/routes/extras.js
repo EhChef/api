@@ -5,7 +5,7 @@ const ObjectId = require("mongoose").Types.ObjectId
 
 const utils = require('../../config/utils');
 
-const Starter = require('../models/Starter');
+const Extra = require('../models/Extra');
 const checkAuth = require('../middleware/auth');
 
 router.get('/', (req, res, next) => {
@@ -16,14 +16,14 @@ router.get('/', (req, res, next) => {
     const limit = parseInt(req.query.count) || 10;
     const offset = parseInt(req.query.offset) || 0;
     const search = req.query.search || false;
-    const starters = await Starter
+    const extras = await Extra
         .find({ account: req.headers.account })
         .skip(offset)
         .limit(limit)
-        .sort({ created_at: 1 }).then(starters => {
+        .sort({ created_at: 1 }).then(extras => {
             res.status(200).json({
-                message: 'Starters fetched successfully',
-                starters: starters
+                message: 'Extras fetched successfully',
+                extras: extras
             });
         }).catch(err => {
             res.status(500).json({ message: err.message });
@@ -39,24 +39,25 @@ router.post('/', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.body)) {
-                res.status(400).json({ message: 'Cannot create starter, empty request.' });
+                res.status(400).json({ message: 'Cannot create extra, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            const starter = new Starter({
+            const extra = new Extra({
                 account: req.headers.account,
                 name: req.body.name,
+                type: req.body.type,
                 available: req.body.available,
                 price: req.body.price,
             });
 
-            starter
+            extra
                 .save()
                 .then(result => {
                     res.status(200).json({
-                        message: 'New starter created with success.',
-                        starter: starter
+                        message: 'New extra created with success.',
+                        extra: extra
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -74,20 +75,20 @@ router.get('/:id', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id) || !ObjectId.isValid(req.params.id)) {
-                res.status(400).json({ message: 'Cannot get starter, empty request.' });
+                res.status(400).json({ message: 'Cannot get extra, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            const starter = Starter
+            const extra = Extra
                 .findOne({
                     _id: req.params.id,
                     account: req.headers.account
                 })
-                .then(starter => {
+                .then(extra => {
                     res.status(200).json({
-                        message: 'Starter fetched successfully',
-                        starter: starter
+                        message: 'Extra fetched successfully',
+                        extra: extra
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -105,24 +106,24 @@ router.post('/:id', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id) || !ObjectId.isValid(req.params.id)) {
-                res.status(400).json({ message: 'Cannot update starter, empty request.' });
+                res.status(400).json({ message: 'Cannot update extra, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            const starter = await Starter.findOne({
+            const extra = await Extra.findOne({
                 _id: req.params.id,
                 account: req.headers.account
             });
 
-            Object.assign(starter, req.body);
+            Object.assign(extra, req.body);
 
-            starter
+            extra
                 .save()
                 .then(result => {
                     res.status(200).json({
-                        message: 'Starter updated with success.',
-                        starter: starter
+                        message: 'Extra updated with success.',
+                        extra: extra
                     });
                 }).catch(err => {
                     res.status(500).json({ message: err.message });
@@ -140,18 +141,18 @@ router.delete('/:id', checkAuth, (req, res, next) => {
             });
         } else {
             if (utils.requestIsEmpty(req.params.id) || !ObjectId.isValid(req.params.id)) {
-                res.status(400).json({ message: 'Cannot delete starter, empty request.' });
+                res.status(400).json({ message: 'Cannot delete extra, empty request.' });
             }
             if (utils.requestIsEmpty(req.headers.account)) {
                 res.status(500).json({ message: 'You must provide an account id in your request headers.' });
             }
-            Starter.deleteOne({
+            Extra.deleteOne({
                 _id: req.params.id,
                 account: req.headers.account
             }).then(result => {
                 res.status(200).json({
                     success: true,
-                    message: 'Starter deleted'
+                    message: 'Extra deleted'
                 });
             }).catch(err => {
                 res.status(500).json({ message: err.message });

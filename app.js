@@ -11,9 +11,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const orderRoutes = require('./api/routes/orders');
+const tableRoutes = require('./api/routes/tables');
 const starterRoutes = require('./api/routes/starters');
 const mainCoursesRoutes = require('./api/routes/mainCourses');
 const dessertRoutes = require('./api/routes/desserts');
+const extraRoutes = require('./api/routes/extras');
 const accountRoutes = require('./api/routes/accounts');
 
 app.use((req, res, next) => {
@@ -29,9 +31,11 @@ app.use((req, res, next) => {
 })
 
 app.use('/orders', orderRoutes);
+app.use('/tables', tableRoutes);
 app.use('/starters', starterRoutes);
 app.use('/maincourses', mainCoursesRoutes);
 app.use('/desserts', dessertRoutes);
+app.use('/extras', extraRoutes);
 app.use('/accounts', accountRoutes);
 
 app.use((req, res, next) => {
