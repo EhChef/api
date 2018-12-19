@@ -40,6 +40,7 @@
     "moment": "^2.22.2",
     "mongoose": "^5.3.13",
     "morgan": "^1.9.1",
+    "nodemon": "^1.18.9",
     "randomstring": "^1.1.5"
   }
 }

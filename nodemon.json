@@ -1,6 +1,5 @@
 {
     "env": {
-        "MONGODB_URI": "mongodb://localhost:27017/eh_chef",
         "JWT_KEY": "zifj67ah6ehzy6ah"
     }
 }
