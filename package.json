@@ -41,6 +41,7 @@
     "mongoose": "^5.3.13",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "socket.io": "^2.2.0"
   }
 }
